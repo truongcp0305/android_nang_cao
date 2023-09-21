@@ -99,7 +99,13 @@ func (Cs *TaskController) Update(c echo.Context) error {
 	if params.Data == "" {
 		return c.JSON(http.StatusBadRequest, nil)
 	}
-	return nil
+	err := Cs.task.UpdateTask(params.Data)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": "Update sucsess",
+	})
 }
 
 // @Summary Delete a task
@@ -115,5 +121,12 @@ func (Cs *TaskController) Delete(c echo.Context) error {
 	if params.Id == "" {
 		return c.JSON(http.StatusBadRequest, nil)
 	}
-	return nil
+	task := params.GetModel()
+	err := Cs.task.DeleteTask(task)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": "Delete sucsess",
+	})
 }

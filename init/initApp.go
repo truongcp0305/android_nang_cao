@@ -13,7 +13,8 @@ func InitApp() {
 	fmt.Println(pg)
 	r := registry.NewRegistry(pg)
 	tc := r.NewTaskController()
+	uc := r.NewUserController()
 	e := echo.New()
-	NewRouter(e, tc)
+	NewRouter(e, tc, uc)
 	e.Logger.Fatal(e.Start(":1323"))
 }

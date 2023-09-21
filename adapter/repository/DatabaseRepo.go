@@ -31,3 +31,23 @@ func (r *DatabaseRepo) CreateTask(task *model.Task) error {
 	_, err := r.db.Model(task).Insert()
 	return err
 }
+
+func (r *DatabaseRepo) UpdateTask(task *model.Task) error {
+	_, err := r.db.Model(task).Update()
+	return err
+}
+
+func (r *DatabaseRepo) DeleteTask(task *model.Task) error {
+	_, err := r.db.Model(task).Delete()
+	return err
+}
+
+func (r *DatabaseRepo) CreateUser(user *model.User) error {
+	_, err := r.db.Model(user).Insert()
+	return err
+}
+
+func (r *DatabaseRepo) GetUserByUserNameAndPass(user *model.User) error {
+	err := r.db.Model(user).Where("user_name = ?", user.UserName).Where("password = ?", user.Pass).First()
+	return err
+}

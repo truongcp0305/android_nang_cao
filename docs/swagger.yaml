@@ -1,4 +1,11 @@
 definitions:
+  incoming.CreateUserParam:
+    properties:
+      password:
+        type: string
+      userName:
+        type: string
+    type: object
   model.Task:
     properties:
       assignName:
@@ -32,8 +39,14 @@ definitions:
     type: object
   outgoing.ModelReturn:
     properties:
-      data:
+      userId:
         example: ""
+        type: string
+    type: object
+  outgoing.UserReturn:
+    properties:
+      userId:
+        example: "1234"
         type: string
     type: object
 host: https://android-api
@@ -167,6 +180,56 @@ paths:
       summary: Get list task
       tags:
       - Task
+  /user:
+    post:
+      parameters:
+      - description: userName and password
+        in: body
+        name: userInfo
+        required: true
+        schema:
+          $ref: '#/definitions/incoming.CreateUserParam'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/outgoing.UserReturn'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outgoing.ModelReturn'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/outgoing.ModelReturn'
+      summary: Create account
+      tags:
+      - User
+  /user/login:
+    post:
+      parameters:
+      - description: userName and password
+        in: body
+        name: userInfo
+        required: true
+        schema:
+          $ref: '#/definitions/incoming.CreateUserParam'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/outgoing.UserReturn'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outgoing.ModelReturn'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/outgoing.ModelReturn'
+      summary: Login
+      tags:
+      - User
 schemes:
 - http
 swagger: "2.0"

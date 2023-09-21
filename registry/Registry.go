@@ -24,3 +24,10 @@ func (r *Registry) NewTaskController() controller.TaskController {
 		*service.NewTaskService(db),
 	)
 }
+
+func (r *Registry) NewUserController() controller.UserController {
+	db := repository.NewDatabaseRepo(r.db)
+	return controller.NewUserController(
+		*service.NewUserService(db),
+	)
+}
