@@ -53,7 +53,7 @@ func (s *TaskService) UpdateTask(data string) error {
 	task := model.Task{}
 	err := json.Unmarshal([]byte(data), &task)
 	if err != nil {
-		return errors.New("Invalid data to create task")
+		return errors.New("Invalid data to update task")
 	}
 	err = s.database.UpdateTask(&task)
 	if err != nil {

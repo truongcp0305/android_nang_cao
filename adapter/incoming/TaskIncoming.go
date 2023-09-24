@@ -31,7 +31,7 @@ type UpdateTaskParams struct {
 }
 
 type DeleteTaskParams struct {
-	Id string `json:"id" query:"id" form:"id"`
+	Id string `json:"id" query:"id" form:"id" param:"id"`
 }
 
 func (ic *DeleteTaskParams) GetModel() *model.Task {

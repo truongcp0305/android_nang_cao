@@ -33,12 +33,12 @@ func (r *DatabaseRepo) CreateTask(task *model.Task) error {
 }
 
 func (r *DatabaseRepo) UpdateTask(task *model.Task) error {
-	_, err := r.db.Model(task).Update()
+	_, err := r.db.Model(task).WherePK().Update()
 	return err
 }
 
 func (r *DatabaseRepo) DeleteTask(task *model.Task) error {
-	_, err := r.db.Model(task).Delete()
+	_, err := r.db.Model(task).WherePK().Delete()
 	return err
 }
 
