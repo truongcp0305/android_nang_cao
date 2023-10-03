@@ -31,3 +31,10 @@ func (r *Registry) NewUserController() controller.UserController {
 		*service.NewUserService(db),
 	)
 }
+
+func (r *Registry) NewWordController() controller.WordController {
+	db := repository.NewDatabaseRepo(r.db)
+	return controller.NewWordController(
+		*service.NewWordService(db),
+	)
+}

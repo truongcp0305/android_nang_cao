@@ -37,7 +37,8 @@ func (Cs *UserController) Create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"userId": userId,
+		"message": "create sucsess",
+		"userId":  userId,
 	})
 }
 
@@ -60,7 +61,8 @@ func (Cs *UserController) Login(c echo.Context) error {
 		return c.JSON(http.StatusForbidden, err)
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"userId": userId,
+		"message": "login sucsess",
+		"userId":  userId,
 	})
 }
 

@@ -3,6 +3,7 @@ package service
 import (
 	"android-service/model"
 	"android-service/usecase/repository"
+	"errors"
 )
 
 type UserService struct {
@@ -16,12 +17,16 @@ func NewUserService(database repository.Database) *UserService {
 }
 
 func (us *UserService) CreateAccount(user *model.User) (string, error) {
-	user.UserId = generateUUID()
-	err := us.database.CreateUser(user)
+	err := us.database.GetUserByUserNameAndPass(user)
 	if err != nil {
-		return "", err
+		user.UserId = generateUUID()
+		err = us.database.CreateUser(user)
+		if err != nil {
+			return "", err
+		}
+		return user.UserId, nil
 	}
-	return user.UserId, nil
+	return "", errors.New("username already exists")
 }
 
 func (us *UserService) Login(user *model.User) (string, error) {

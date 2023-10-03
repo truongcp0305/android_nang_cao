@@ -14,7 +14,8 @@ func InitApp() {
 	r := registry.NewRegistry(pg)
 	tc := r.NewTaskController()
 	uc := r.NewUserController()
+	wc := r.NewWordController()
 	e := echo.New()
-	NewRouter(e, tc, uc)
-	e.Logger.Fatal(e.Start(":1323"))
+	NewRouter(e, tc, uc, wc)
+	e.Logger.Fatal(e.Start(":8080"))
 }

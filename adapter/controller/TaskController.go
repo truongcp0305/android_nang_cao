@@ -73,16 +73,16 @@ func (Cs *TaskController) GetList(c echo.Context) error {
 // @Router /task [post]
 func (Cs *TaskController) Create(c echo.Context) error {
 	var params incoming.CreateTaskParams
-	c.Bind(&params)
+	err := c.Bind(&params)
 	if params.Data == "" {
 		return c.JSON(http.StatusBadRequest, nil)
 	}
-	err := Cs.task.CreateTask(params.Data)
+	err = Cs.task.CreateTask(params.Data)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Create task sucsess",
+		"message": "Create task sucsess",
 	})
 }
 
@@ -104,7 +104,7 @@ func (Cs *TaskController) Update(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Update sucsess",
+		"message": "Update sucsess",
 	})
 }
 
@@ -127,6 +127,6 @@ func (Cs *TaskController) Delete(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Delete sucsess",
+		"message": "Delete sucsess",
 	})
 }

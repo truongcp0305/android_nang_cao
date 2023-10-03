@@ -51,3 +51,13 @@ func (r *DatabaseRepo) GetUserByUserNameAndPass(user *model.User) error {
 	err := r.db.Model(user).Where("user_name = ?", user.UserName).Where("password = ?", user.Pass).First()
 	return err
 }
+
+func (r *DatabaseRepo) GetUserName(user *model.User) error {
+	err := r.db.Model(user).Where("user_name = ?", user.UserName).First()
+	return err
+}
+
+func (r *DatabaseRepo) InsertWord(words []model.Word) error {
+	_, err := r.db.Model(&words).Insert()
+	return err
+}

@@ -10,4 +10,5 @@ type Database interface {
 	UpdateTask(task *model.Task) error
 	CreateUser(user *model.User) error
 	GetUserByUserNameAndPass(user *model.User) error
+	InsertWord(words []model.Word) error
 }

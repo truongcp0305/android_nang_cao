@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserController) {
+func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserController, wc controller.WordController) {
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "oke")
 	})
@@ -31,5 +31,8 @@ func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserCon
 	})
 	e.POST("/user/login", func(c echo.Context) error {
 		return uc.Login(c)
+	})
+	e.POST("/word", func(c echo.Context) error {
+		return wc.Insert(c)
 	})
 }
