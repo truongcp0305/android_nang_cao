@@ -38,3 +38,11 @@ func (r *Registry) NewWordController() controller.WordController {
 		*service.NewWordService(db),
 	)
 }
+
+func (r *Registry) NewSocketController() controller.SocketController {
+	db := repository.NewDatabaseRepo(r.db)
+	return controller.NewSocketController(
+		*service.NewSocketService(db),
+		*service.NewRoom(),
+	)
+}

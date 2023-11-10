@@ -15,7 +15,9 @@ func InitApp() {
 	tc := r.NewTaskController()
 	uc := r.NewUserController()
 	wc := r.NewWordController()
+	sc := r.NewSocketController()
 	e := echo.New()
-	NewRouter(e, tc, uc, wc)
-	e.Logger.Fatal(e.Start(":8080"))
+	NewRouter(e, tc, uc, wc, sc)
+	//go http.ListenAndServe(":8081", nil)
+	go e.Logger.Fatal(e.Start(":8080"))
 }

@@ -6,7 +6,7 @@ type Task struct {
 	UserId     string   `json:"userId" pg:"user_id"`
 	Desciption string   `json:"desciption"`
 	Priority   string   `json:"priority"`
-	TaskType   string   `json:"type" pg:"task_type"`
+	TaskType   string   `json:"taskType" pg:"task_type"`
 	AssignTo   string   `json:"assignTo" pg:"assign_to"`
 	AssignName string   `json:"assignName" pg:"assign_name"`
 	Sprint     string   `json:"sprint"`

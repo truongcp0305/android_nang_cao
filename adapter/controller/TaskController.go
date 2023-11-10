@@ -3,6 +3,7 @@ package controller
 import (
 	"android-service/adapter/incoming"
 	"android-service/usecase/service"
+	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -75,11 +76,11 @@ func (Cs *TaskController) Create(c echo.Context) error {
 	var params incoming.CreateTaskParams
 	err := c.Bind(&params)
 	if params.Data == "" {
-		return c.JSON(http.StatusBadRequest, nil)
+		return c.JSON(http.StatusBadRequest, errors.New("Invalid params").Error())
 	}
 	err = Cs.task.CreateTask(params.Data)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Create task sucsess",
@@ -97,11 +98,11 @@ func (Cs *TaskController) Update(c echo.Context) error {
 	var params incoming.UpdateTaskParams
 	c.Bind(&params)
 	if params.Data == "" {
-		return c.JSON(http.StatusBadRequest, nil)
+		return c.JSON(http.StatusBadRequest, errors.New("Invalid params").Error())
 	}
 	err := Cs.task.UpdateTask(params.Data)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Update sucsess",
@@ -119,12 +120,12 @@ func (Cs *TaskController) Delete(c echo.Context) error {
 	var params incoming.DeleteTaskParams
 	c.Bind(&params)
 	if params.Id == "" {
-		return c.JSON(http.StatusBadRequest, nil)
+		return c.JSON(http.StatusBadRequest, errors.New("Invalid params").Error())
 	}
 	task := params.GetModel()
 	err := Cs.task.DeleteTask(task)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Delete sucsess",

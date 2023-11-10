@@ -4,6 +4,7 @@ import (
 	"android-service/model"
 	"android-service/usecase/repository"
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -37,4 +38,12 @@ func (s *WordService) InsertWord(texts string, level string) error {
 		return err
 	}
 	return nil
+}
+
+func (s *WordService) GetQuestions(level string) ([]model.Word, error) {
+	words, err := s.db.GetWordsForQuestion(level)
+	if len(words) == 0 || err != nil {
+		return words, fmt.Errorf("Failed to get words: %v", err)
+	}
+	return words, nil
 }

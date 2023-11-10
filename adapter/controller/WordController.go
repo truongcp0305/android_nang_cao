@@ -30,3 +30,16 @@ func (wC *WordController) Insert(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, "Insert sucsess")
 }
+
+func (wC *WordController) GetQuestions(c echo.Context) error {
+	var param incoming.GetQuestion
+	err := c.Bind(&param)
+	if param.Level == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	result, err := wC.wordService.GetQuestions(param.Level)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, result)
+}
