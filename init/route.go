@@ -2,15 +2,36 @@ package init
 
 import (
 	"android-service/adapter/controller"
+	"android-service/infrastructure"
 	"log"
 	"net/http"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserController, wc controller.WordController, ws controller.SocketController) {
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	config := infrastructure.GetMiddleWareConfig()
+	e.Use(echojwt.WithConfig(config))
+
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "oke")
+	})
+	e.POST("/reset", func(c echo.Context) error {
+		return uc.ResetPass(c)
+	})
+	e.GET("/reset/:encrypt", func(c echo.Context) error {
+		return uc.Reset(c)
+	})
+	e.POST("/user/login", func(c echo.Context) error {
+		return uc.Login(c)
+	})
+	e.GET("/task/all", func(c echo.Context) error {
+		return tc.GetAll(c)
 	})
 	e.GET("/task/:id", func(c echo.Context) error {
 		return tc.Detail(c)
@@ -29,9 +50,6 @@ func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserCon
 	})
 	e.POST("/user", func(c echo.Context) error {
 		return uc.Create(c)
-	})
-	e.POST("/user/login", func(c echo.Context) error {
-		return uc.Login(c)
 	})
 	e.POST("/user/update", func(c echo.Context) error {
 		return uc.Update(c)
@@ -58,5 +76,4 @@ func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserCon
 		log.Print("Hander room")
 		ws.RoomHandler(w, r)
 	})
-	//http.HandleFunc("/room/join", ws.RoomHandler)
 }

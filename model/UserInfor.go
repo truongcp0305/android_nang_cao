@@ -6,5 +6,7 @@ type UserInfo struct {
 	UserName   string   `json:"userName" pg:"user_name"`
 	Point      string   `json:"point"`
 	OtherInfor string   `json:"otherInfor" pg:"other_infor"`
+	Role       string   `json:"role" pg:"role"`
+	Token      string   `json:"token" pg:"-"`
 	tableName  struct{} `pg:"user_infor"`
 }

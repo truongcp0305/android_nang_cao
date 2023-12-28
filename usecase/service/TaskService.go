@@ -67,6 +67,11 @@ func (s *TaskService) DeleteTask(task *model.Task) error {
 	return err
 }
 
+func (s *TaskService) GetAll() ([]model.Task, error) {
+	tasks, err := s.database.GetAllTask()
+	return tasks, err
+}
+
 func generateUUID() string {
 	// Sử dụng thời gian hiện tại để tạo một seed ngẫu nhiên
 	rand.Seed(time.Now().UnixNano())

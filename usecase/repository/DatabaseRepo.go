@@ -17,4 +17,6 @@ type Database interface {
 	CreateUserInfo(info *model.UserInfo) error
 	GetUserInfo(info *model.UserInfo) error
 	UpdateUserInfo(info *model.UserInfo) error
+	UpdateUser(user *model.User) error
+	GetAllTask() ([]model.Task, error)
 }

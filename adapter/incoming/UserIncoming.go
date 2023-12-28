@@ -57,3 +57,11 @@ func (s *StatusIncoming) GetModel() *model.MatchStatus {
 		Point:  s.Point,
 	}
 }
+
+type ResetPassIncoming struct {
+	Email string `json:"email" form:"email"`
+}
+
+type ResetLinkIncoming struct {
+	Value string `param:"encrypt" query:"encrypt"`
+}

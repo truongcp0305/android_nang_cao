@@ -2,6 +2,7 @@ package controller
 
 import (
 	"android-service/adapter/incoming"
+	"android-service/infrastructure"
 	"android-service/usecase/service"
 	"net/http"
 
@@ -36,6 +37,10 @@ func (Cs *UserController) Create(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+	result.Token, err = infrastructure.CreateJwt(*user)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, err.Error())
+	}
 	return c.JSON(http.StatusOK, result)
 }
 
@@ -54,6 +59,10 @@ func (Cs *UserController) Login(c echo.Context) error {
 	}
 	user := params.GetModel()
 	result, err := Cs.userService.Login(user)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, err.Error())
+	}
+	result.Token, err = infrastructure.CreateJwt(*user)
 	if err != nil {
 		return c.JSON(http.StatusForbidden, err.Error())
 	}
@@ -84,4 +93,30 @@ func (Cs *UserController) GetList(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, result)
+}
+
+func (Cs *UserController) ResetPass(c echo.Context) error {
+	params := incoming.ResetPassIncoming{}
+	c.Bind(&params)
+	if params.Email == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	err := Cs.userService.SendMailResetPass(params.Email)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, "ok")
+}
+
+func (Cs *UserController) Reset(c echo.Context) error {
+	var param incoming.ResetLinkIncoming
+	c.Bind(&param)
+	if param.Value == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	err := Cs.userService.ResetPass(param.Value)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, "Password has been reset!")
 }

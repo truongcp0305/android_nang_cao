@@ -65,6 +65,16 @@ func (Cs *TaskController) GetList(c echo.Context) error {
 	})
 }
 
+func (Cs *TaskController) GetAll(c echo.Context) error {
+	ts, err := Cs.task.GetAll()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": ts,
+	})
+}
+
 // @Summary Create a task
 // @Tags Task
 // @Param data body string true "json of a task"

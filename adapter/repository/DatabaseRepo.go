@@ -61,10 +61,16 @@ func (r *DatabaseRepo) GetUserByName(user *model.User) error {
 	return err
 }
 
+func (r *DatabaseRepo) UpdateUser(user *model.User) error {
+	_, err := r.db.Model(user).Where("id = ?", user.UserId).Update()
+	return err
+}
+
 func (r *DatabaseRepo) GetUserInfo(info *model.UserInfo) error {
 	err := r.db.Model(info).Where("user_id = ?", info.UserId).First()
 	return err
 }
+
 func (r *DatabaseRepo) CreateUserInfo(info *model.UserInfo) error {
 	_, err := r.db.Model(info).Insert()
 	return err
@@ -115,6 +121,13 @@ func (r *DatabaseRepo) GetWordsForQuestion(level string) ([]model.Word, error) {
 	}
 	fmt.Println(listQuest)
 	return result, err
+}
+
+func (r *DatabaseRepo) GetAllTask() ([]model.Task, error) {
+	tasks := []model.Task{}
+	t := model.Task{}
+	err := r.db.Model(&t).Select(&tasks)
+	return tasks, err
 }
 
 func CheckQuestionAudio(word string) (bool, string, error) {
