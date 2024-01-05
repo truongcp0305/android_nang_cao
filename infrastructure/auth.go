@@ -30,7 +30,7 @@ func GetPublicKey() []byte {
 }
 
 func CreateJwt(model model.User) (string, error) {
-	expirationTime := time.Now().Add(15 * time.Minute)
+	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &claims{
 		Email:       model.UserName,
 		DisplayName: model.UserName,
@@ -47,8 +47,8 @@ func GetMiddleWareConfig() echojwt.Config {
 		ParseTokenFunc: func(c echo.Context, auth string) (interface{}, error) {
 			keyFunc := func(t *jwt.Token) (interface{}, error) {
 				keyBys := GetPublicKey()
-				publicKey, _ := jwt.ParseRSAPublicKeyFromPEM(keyBys)
-				return publicKey, nil
+				//publicKey, _ := jwt.ParseRSAPublicKeyFromPEM(keyBys)
+				return keyBys, nil
 			}
 			token, err := jwt.Parse(auth, keyFunc)
 			if err != nil {
@@ -67,6 +67,9 @@ func GetMiddleWareConfig() echojwt.Config {
 				return true
 			}
 			if strings.HasPrefix(c.Path(), "/reset") {
+				return true
+			}
+			if strings.HasPrefix(c.Path(), "/user/change-pass") {
 				return true
 			}
 			return false

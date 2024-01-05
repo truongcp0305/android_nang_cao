@@ -33,12 +33,12 @@ func (Cs *TaskController) Detail(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, nil)
 	}
 	task := params.GetModel()
-	err := Cs.task.DetailTask(task)
+	res, err := Cs.task.DetailTask(task)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": task,
+		"data": res,
 	})
 }
 

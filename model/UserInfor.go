@@ -1,12 +1,12 @@
 package model
 
 type UserInfo struct {
-	Id         string   `json:"id"`
-	UserId     string   `json:"userId" pg:"user_id"`
-	UserName   string   `json:"userName" pg:"user_name"`
-	Point      string   `json:"point"`
-	OtherInfor string   `json:"otherInfor" pg:"other_infor"`
-	Role       string   `json:"role" pg:"role"`
-	Token      string   `json:"token" pg:"-"`
-	tableName  struct{} `pg:"user_infor"`
+	Id         string `json:"id"`
+	UserId     string `json:"userId" bson:"user_id"`
+	UserName   string `json:"userName" bson:"user_name"`
+	Point      string `json:"point" bson:"point"`
+	OtherInfor string `json:"otherInfor" bson:"other_infor"`
+	Role       string `json:"role" bson:"role"`
+	Token      string `json:"token" bson:"-"`
+	//tableName  struct{} `pg:"user_infor"`
 }

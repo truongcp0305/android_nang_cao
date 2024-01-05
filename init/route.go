@@ -72,6 +72,18 @@ func NewRouter(e *echo.Echo, tc controller.TaskController, uc controller.UserCon
 	e.GET("/match/leave/:id", func(c echo.Context) error {
 		return ws.Leave(c)
 	})
+	e.POST("/task/assign-to", func(c echo.Context) error {
+		return uc.GetAssignTask(c)
+	})
+	e.POST("/user/lock", func(c echo.Context) error {
+		return uc.Lock(c)
+	})
+	e.POST("/user/change-pass", func(c echo.Context) error {
+		return uc.UpdatePass(c)
+	})
+	e.POST("/user/unlock", func(c echo.Context) error {
+		return uc.Unlock(c)
+	})
 	http.HandleFunc("/room", func(w http.ResponseWriter, r *http.Request) {
 		log.Print("Hander room")
 		ws.RoomHandler(w, r)

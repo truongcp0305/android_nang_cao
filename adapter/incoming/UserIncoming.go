@@ -58,10 +58,27 @@ func (s *StatusIncoming) GetModel() *model.MatchStatus {
 	}
 }
 
+type GetAssignTaskParams struct {
+	UserId string `json:"userId" form:"userId"`
+}
+
 type ResetPassIncoming struct {
 	Email string `json:"email" form:"email"`
 }
 
 type ResetLinkIncoming struct {
 	Value string `param:"encrypt" query:"encrypt"`
+}
+
+type UpdatePassParam struct {
+	UserName string `json:"userName" form:"userName"`
+	Pass     string `json:"password" form:"password"`
+	NewPass  string `json:"newPassword" form:"newPassword"`
+}
+
+func (u *UpdatePassParam) GetModel() *model.User {
+	return &model.User{
+		Pass:     u.Pass,
+		UserName: u.UserName,
+	}
 }

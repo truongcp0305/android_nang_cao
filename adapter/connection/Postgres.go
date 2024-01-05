@@ -1,6 +1,8 @@
 package connection
 
-import "github.com/go-pg/pg/v10"
+import (
+	"github.com/go-pg/pg/v10"
+)
 
 func Conn() *pg.DB {
 	conn := pg.Connect(&pg.Options{

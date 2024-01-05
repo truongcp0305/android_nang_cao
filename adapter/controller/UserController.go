@@ -83,6 +83,21 @@ func (Cs *UserController) Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, "update sucsess")
 }
 
+func (Cs *UserController) GetAssignTask(c echo.Context) error {
+	var param incoming.GetAssignTaskParams
+	c.Bind(&param)
+	if param.UserId == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	result, err := Cs.userService.GetAssignTasks(param.UserId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": result,
+	})
+}
+
 func (Cs *UserController) Logout(c echo.Context) error {
 	return nil
 }
@@ -119,4 +134,43 @@ func (Cs *UserController) Reset(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, "Password has been reset!")
+}
+
+func (Cs *UserController) UpdatePass(c echo.Context) error {
+	var param incoming.UpdatePassParam
+	c.Bind(&param)
+	if param.NewPass == "" || param.Pass == "" || param.UserName == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	err := Cs.userService.UpdatePass(param.GetModel(), param.NewPass)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, "Password has been Change!")
+}
+
+func (Cs *UserController) Lock(c echo.Context) error {
+	var param incoming.UpdatePassParam
+	c.Bind(&param)
+	if param.UserName == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	err := Cs.userService.Lock(param.GetModel())
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, "Lock account succesfuly!")
+}
+
+func (Cs *UserController) Unlock(c echo.Context) error {
+	var param incoming.UpdatePassParam
+	c.Bind(&param)
+	if param.UserName == "" {
+		return c.JSON(http.StatusBadRequest, nil)
+	}
+	err := Cs.userService.UnLock(param.GetModel())
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, "Unlock account succesfuly!")
 }

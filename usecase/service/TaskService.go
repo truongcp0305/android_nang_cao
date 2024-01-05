@@ -19,12 +19,12 @@ func NewTaskService(db repository.Database) *TaskService {
 	}
 }
 
-func (s *TaskService) DetailTask(task *model.Task) error {
-	err := s.database.GetTaskById(task)
+func (s *TaskService) DetailTask(task *model.Task) (model.Task, error) {
+	task, err := s.database.GetTaskById(task)
 	if err != nil {
-		return err
+		return model.Task{}, err
 	}
-	return nil
+	return *task, nil
 }
 
 func (s *TaskService) GetList(task *model.Task) ([]model.Task, error) {

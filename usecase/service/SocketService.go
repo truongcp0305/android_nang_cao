@@ -49,31 +49,32 @@ func (s *SocketService) GetStatus(stt model.MatchStatus) model.MatchStatus {
 }
 
 func (s *SocketService) Join(id string, level string) model.MatchStatus {
-	if len(s.questions) == 0 {
-		s.questions, _ = s.db.GetWordsForQuestion(level)
-	}
-	if _, ok := s.clients[id]; ok {
-		return *s.clients[id]
-	}
-	if len(s.clients) == 2 {
-		//s.clients = make(map[string]*model.MatchStatus)
-		return model.MatchStatus{
-			Message: "sever quá tải",
-		}
-	}
-	s.clients[id] = &model.MatchStatus{
-		Id:     id,
-		Status: "finding",
-		Point:  "0",
-	}
-	if len(s.clients) == 2 {
-		for _, c := range s.clients {
-			s.clients[c.Id].Status = "matching"
-			s.clients[c.Id].Questions = s.questions
-		}
-		s.HandleConnection()
-	}
-	return *s.clients[id]
+	// if len(s.questions) == 0 {
+	// 	s.questions, _ = s.db.GetWordsForQuestion(level)
+	// }
+	// if _, ok := s.clients[id]; ok {
+	// 	return *s.clients[id]
+	// }
+	// if len(s.clients) == 2 {
+	// 	//s.clients = make(map[string]*model.MatchStatus)
+	// 	return model.MatchStatus{
+	// 		Message: "sever quá tải",
+	// 	}
+	// }
+	// s.clients[id] = &model.MatchStatus{
+	// 	Id:     id,
+	// 	Status: "finding",
+	// 	Point:  "0",
+	// }
+	// if len(s.clients) == 2 {
+	// 	for _, c := range s.clients {
+	// 		s.clients[c.Id].Status = "matching"
+	// 		s.clients[c.Id].Questions = s.questions
+	// 	}
+	// 	s.HandleConnection()
+	// }
+	// return *s.clients[id]
+	return model.MatchStatus{}
 }
 
 func (s *SocketService) HandleConnection() {

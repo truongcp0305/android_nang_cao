@@ -69,7 +69,12 @@ func HashString(s string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func Decrypt(encrypted string) (string, error) {
+func Decrypt(encrypted string) (result string, e error) {
+	defer func() {
+		if r := recover(); r != nil {
+			e = fmt.Errorf("Panic : %v", r)
+		}
+	}()
 	key := []byte(aeskey.key)
 	ciphertext, err := base64.URLEncoding.DecodeString(encrypted)
 	if err != nil {
